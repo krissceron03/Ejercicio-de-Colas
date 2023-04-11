@@ -25,6 +25,7 @@ public class interfazP extends JDialog {
     private JButton EJECUTARButton;
     private JTextArea txtDatos;
     private JButton MOSTRARDATOSButton;
+    private JButton eliminarHistorialButton;
     //private JButton buttonOK;
     //private JButton buttonCancel;
     private int cuanto= 20;
@@ -96,7 +97,7 @@ public class interfazP extends JDialog {
                         }
                         else{
                             tiempo1=tiempo1+cuanto;
-                            conmutaciones++;
+                            //conmutaciones++;
                             txtRoundRobin.append("\nTiempo "+tiempo1+": "+pr.getId()+" continúa ejecutándose");
                             pr.setTiempo(tiempoT);
                             procesos.offer(pr);
@@ -104,6 +105,9 @@ public class interfazP extends JDialog {
 
                     }
                 }
+                txtRoundRobin.append("------ESTADÍSTICAS GENERALES-----\n");
+                txtRoundRobin.append("Total tiempo de ejecución de todos los procesos: "+tiempo1+" ms.\n");
+                txtRoundRobin.append("Total de conmutaciones: "+conmutaciones);
             }
         });
         btnHistorial.addActionListener(new ActionListener() {
@@ -141,6 +145,13 @@ public class interfazP extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 txtHistorial.setText(historial.peek().toString());
+            }
+        });
+        eliminarHistorialButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                procesos.clear();
+                txtHistorial.setText(null);
             }
         });
     }
