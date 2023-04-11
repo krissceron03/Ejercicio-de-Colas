@@ -44,7 +44,7 @@ public class interfazP extends JDialog {
         btnAgregar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                procesosPredef();
+               // procesosPredef();
                 procesos.add(new proceso(txtID.getText(), Integer.parseInt(txtCedula.getText()), Integer.parseInt(txtTiempo.getText())));
                 procesos.poll();
                 mostrarDatos();
@@ -63,40 +63,41 @@ public class interfazP extends JDialog {
                 proceso pr = new proceso("",0,0);
                 int tiempoT=0;
                 int tiempo1=0;
+                int conmutaciones=0;
                 if(procesos.size()>1){
                     while(procesos.size()>1){
                         pr= procesos.poll();
-                        txtRoundRobin.append("Tiempo "+tiempo1+": "+pr.getId()+" entra en ejecución.");
+                        txtRoundRobin.append("\nTiempo "+tiempo1+": "+pr.getId()+" entra en ejecución.");
                         tiempoT= pr.getTiempo()-cuanto;
 
-                        if (procesos.size()<=0){
+                        if (tiempoT<=0){
                             tiempo1=tiempo1+pr.getTiempo();
-                            txtRoundRobin.append("Tiempo "+tiempo1+": "+pr.getId()+" finaliza la ejecución.");
+                            txtRoundRobin.append("\nTiempo "+tiempo1+": "+pr.getId()+" finaliza la ejecución.");
                             historial.push(pr);
                         }
                         else{
                             tiempo1=tiempo1+cuanto;
-                            txtRoundRobin.append("Tiempo "+tiempo1+": "+pr.getId()+" se conmuta. Pendiente por ejecutar "+tiempoT+" ms.");
+                            conmutaciones++;
+                            txtRoundRobin.append("\nTiempo "+tiempo1+": "+pr.getId()+" se conmuta. Pendiente por ejecutar "+tiempoT+" ms.");
                             pr.setTiempo(tiempoT);
                             procesos.offer(pr);//añade otra vez a la cola
                         }
-
                     }
-
                 }
                 if (procesos.size()==1){
                     while(procesos.size()>0){
                         pr= procesos.poll();
-                        txtRoundRobin.append("Tiempo "+tiempo1+": "+pr.getId()+" entra en ejecución.");
+                        txtRoundRobin.append("\nTiempo "+tiempo1+": "+pr.getId()+" entra en ejecución.");
                         tiempoT= pr.getTiempo()-cuanto;
                         if (tiempoT<=0){
                             tiempo1=tiempo1+pr.getTiempo();
-                            txtRoundRobin.append("Tiempo "+tiempo1+": "+pr.getId()+" finaliza la ejecución.");
+                            txtRoundRobin.append("\nTiempo "+tiempo1+": "+pr.getId()+" finaliza la ejecución.");
                             historial.push(pr);
                         }
                         else{
                             tiempo1=tiempo1+cuanto;
-                            txtRoundRobin.append("Tiempo "+tiempo1+": "+pr.getId()+" continúa ejecutándose");
+                            conmutaciones++;
+                            txtRoundRobin.append("\nTiempo "+tiempo1+": "+pr.getId()+" continúa ejecutándose");
                             pr.setTiempo(tiempoT);
                             procesos.offer(pr);
                         }
@@ -129,12 +130,7 @@ public class interfazP extends JDialog {
 
             }
         });
-        EJECUTARButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mostrarRR();
-            }
-        });
+
         MOSTRARDATOSButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -148,9 +144,7 @@ public class interfazP extends JDialog {
             }
         });
     }
-    private void mostrarRR(){
 
-    }
     private void mostrarDatos(){
         String cedula;
         String tiempo;
